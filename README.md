@@ -16,6 +16,7 @@ Things to note about environments:
   
 
 Current progress:
+```
   Gridworld Found for OpenAI: 100%
   Gridworld Installed: 100%
   Gridworld Operational:100%
