@@ -15,7 +15,10 @@ Things to note about environments:
   env.reset() is necessary to restart the environment progress
   env.render() will help with rendering current environment after each step
 ```
-  
+```
+Funny Josh Notes:
+Taxi would make a far better approximator of MAXQ's power, just like the paper. 
+```
 
 Current progress:
 ```
