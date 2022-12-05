@@ -1,63 +1,59 @@
-# Josh's Script for a basic qTable lookup QLearning algorithm
-# Here we utilize gym_simplegrid for our gridworld. It looks nice 
 import gym 
 import gym_simplegrid
 import numpy as np
 import random
 
-# Custom reward map 
+#Initialize 8x8 environment
 my_reward_map = {
         b'E': -1.0,
         b'S': -1.0,
-        b'W': -10.0,
-        b'G': 10.0,
+        b'W': -5.0,
+        b'G': 5.0,
     }
-#SimpleGrid-8v8-v0 is a great approximator from simplegrid. 
-env = gym.make('SimpleGrid-8x8-v0', reward_map=my_reward_map)
+env = gym.make('SimpleGrid-8x8-v0', reward_map=my_reward_map, p_noise = 0)
 env.metadata["render_fps"] = 60
 observation = env.reset()
 
 #Initialize my state map and variables
+actions = (0,1,2,3) #L D R U
 complete = 0
 gamma = 0.1
 alpha = 0.95
 epsi = 0.1
-
-#Classic qTable setup setting everything to 0
 qTab = np.zeros([env.observation_space.n, env.action_space.n])
-state = observation
+#print(qTab)
+state = 0
+#State 0 is the initial state. 
 
-#For my sanity, I only ran it for 10 iterations, but it runs much faster when you only visualize the end result
-while complete < 100:
+
+while complete < 10:
     done = 0
     while done == 0:
         #Time to do the Q learning. 
-        # generate a value. If less than epsilon value, we get crazy. 
         if random.uniform(0,1) < epsi:
-            #random action
             action = env.action_space.sample()
+            #print(action)
         else:
-            #Get my actions
-            qList = qTab[state]
-            #Returns random and breaks ties for max values
-            action = np.random.choice(np.flatnonzero(qList == qList.max()))
-        #STEP
+            qList = np.asarray(qTab[state])
+            action = np.argmax(np.random.random(qList.shape)*(qList==qList.max()))
+            #print(action)
         observation, reward, done, info = env.step(action) 
+        #print("reward")
+        #print(reward)
         
-        #Get my current qVal
-        curVal = qTab[state][action]
-        #Get the max value of the next state
+        oldVal = qTab[state, action]
         nextMax = np.max(qTab[observation])
 
-        #This is an update step
-        newVal = (1 - alpha) * curVal + alpha * (reward + gamma * nextMax)
-        qTab[state][action] = newVal
+        newVal = (1 - alpha) * oldVal + alpha * (reward + gamma * nextMax)
+        qTab[state, action] = newVal
         state = observation
+        print(qTab[state])
 
-        if(complete > 90):
-            env.render()
+
+#        env.render()
+        #step is what advances the action
         if done:
             observation = env.reset()
-        if reward == 10:
+        if reward == 5:
             complete += 1
 env.close()

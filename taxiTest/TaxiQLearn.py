@@ -4,6 +4,7 @@
 import gym 
 import numpy as np
 import random
+import pandas as pd
 
 env = gym.make('Taxi-v3')
 observation = env.reset()
@@ -12,14 +13,22 @@ observation = env.reset()
 complete = 0
 gamma = 0.1
 alpha = 0.95
-epsi = 0.1
+epsi = 0.001
 #Set my Q Table + initial state
 qTab = np.zeros([env.observation_space.n, env.action_space.n])
 state = observation
 
 # 100 iterations
-while complete < 100:
+counter = 0
+
+collected_data = {'success': [], 'reward': [], 'actions': []}
+
+runs = 5000
+for i in range(runs):
+    print(f"{i}/{runs}", end='\r')
     done = 0
+    steps = 0
+    total_reward = 0
     while done == 0:
         #Time to do the Q learning. 
         # If below Epsilon, random otherwise get the optimal action
@@ -31,6 +40,9 @@ while complete < 100:
         #STEP
         observation, reward, done, info = env.step(action) 
         
+        steps += 1
+        total_reward += reward
+
         #Update Q Vals
         curVal = qTab[state][action]
         nextMax = np.max(qTab[observation])
@@ -38,10 +50,31 @@ while complete < 100:
         qTab[state][action] = newVal
         state = observation
         #Render for last 9 sets
-        if complete > 90:
+        if i == runs-1:
             env.render()
+            print(list(env.decode(env.s)))
+            if done:
+                print(steps)
+
         if done:
-            observation = env.reset()
-            print("------------------------------------------------- RESET ---------------------------------------------------")
+            # data collection
+            x = list(env.decode(env.s))
+            # if success
+            if (x[2] == x[3]):
+                counter += 1
+                collected_data['success'].append(1)
+            else:
+                collected_data['success'].append(0)
+            collected_data['reward'].append(total_reward)
+            collected_data['actions'].append(steps)
+
+            # print("------------------------------------------------- RESET ---------------------------------------------------")
             complete += 1
+            observation = env.reset()
+
+
+df = pd.DataFrame.from_dict(collected_data)
+print(df)
+
+print(counter/runs*100, "percent successes")
 env.close()

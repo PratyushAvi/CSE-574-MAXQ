@@ -2,6 +2,7 @@ import gym
 import gym_simplegrid
 import numpy as np
 import random
+import pandas as pd
 
 from maxQagent import MaxQAgent
 from maxQagent import Actions
@@ -20,23 +21,34 @@ state = observation
 
 agent = MaxQAgent(env, alpha, gamma, epsi)
 
-runs = 2000
+collected_data = {'success': [], 'reward': [], 'actions': []}
+
+runs = 5000
 
 counter = 1
 for i in range(runs):
     print(f"{i}/{runs}", end='\r')
     agent.reset()
-    r = agent.maxq(Actions.ROOT, env.s, (i == runs-1))
+    steps = agent.maxq(Actions.ROOT, env.s, (i == runs-1))
     if (i == runs-1):
-        print(r)
-    
+        print(steps)
+
+        
     x = list(env.decode(env.s))
+    # if success (compare passenger position and destination)
     if (x[2] == x[3]):
         counter += 1
-    # print(agent.t)
-    # print(list(env.decode(env.s)))
+        collected_data['success'].append(1)
+    else:
+        collected_data['success'].append(0)
+    collected_data['reward'].append(agent.total_reward)
+    collected_data['actions'].append(steps)
 
-print(counter/runs%100, "percent successes")
+
+df = pd.DataFrame.from_dict(collected_data)
+print(df)
+
+print(counter/runs*100, "percent successes")
 env.close()
 
 

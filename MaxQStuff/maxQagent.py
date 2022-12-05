@@ -29,6 +29,7 @@ class MaxQAgent:
         # self.v_copy = self.v.copy()
         self.c = collections.defaultdict(lambda: 0)
         self.done = False
+        self.total_reward = 0
 
         self.actions = (Actions.SOUTH, Actions.NORTH, Actions.EAST, Actions.WEST, Actions.PICKUP, Actions.DROPOFF) # south, north, east, west, pickup, dropoff
         
@@ -100,8 +101,7 @@ class MaxQAgent:
         self.done = False
         if self.isPrimitive(max_node):
             self.next_state, reward, self.done, info = self.env.step(max_node)
-            # self.next_state = observation
-            # self.done = done
+            self.total_reward += reward
             self.v[(max_node, state)] += self.alpha * (reward - self.v[(max_node, state)])
             if render:
                 self.env.render()
@@ -122,3 +122,4 @@ class MaxQAgent:
         self.env.reset()
         self.done = False
         self.next_state = self.env.s
+        self.total_reward = 0
