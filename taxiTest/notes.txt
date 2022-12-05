@@ -1,0 +1,7 @@
+Research notes:
+1) Q-Tables only work for discrete spaces
+2) I would need a DQN for atari
+3) Frozenlake is effectively the standard openAI implementation of gridworld
+4) Recommending code revisions for Josh
+5) Reeee maxQ hard 
+6) Utilizing Taxi Domain like the paper 
