@@ -1,0 +1,5 @@
+https://github.com/mgbellemare/Arcade-Learning-Environment
+https://github.com/mgbellemare/Arcade-Learning-Environment/blob/master/docs/gym-interface.md
+https://stackoverflow.com/questions/69442971/error-in-importing-environment-openai-gym
+https://www.gymlibrary.dev/environments/atari/
+https://www.gymlibrary.dev/environments/atari/skiing/#observations
