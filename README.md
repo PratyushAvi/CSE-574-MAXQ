@@ -27,10 +27,10 @@ Current progress:
   Gridworld Operational:100%
   Gridworld Understood: 100%
   Basic Greedy Q Learning completed: 100% 
-  MaxQ:0%
-  Documented Code for Q Learning: 0%
-  Documented Code for MaxQ: 0%
-  Documented Findings: 0%
+  MaxQ:100%
+  Documented Code for Q Learning: 100%
+  Documented Code for MaxQ: 100%
+  Documented Findings: 25%
   Cite works or other code for Q learning: 0%
   Cite works or other code for MaxQ: 0%
 ```
