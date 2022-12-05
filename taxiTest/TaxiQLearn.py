@@ -72,7 +72,7 @@ for i in range(runs):
             complete += 1
             observation = env.reset()
 
-
+# pandas
 df = pd.DataFrame.from_dict(collected_data)
 print(df)
 

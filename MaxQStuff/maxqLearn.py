@@ -44,7 +44,7 @@ for i in range(runs):
     collected_data['reward'].append(agent.total_reward)
     collected_data['actions'].append(steps)
 
-
+# pandas
 df = pd.DataFrame.from_dict(collected_data)
 print(df)
 
