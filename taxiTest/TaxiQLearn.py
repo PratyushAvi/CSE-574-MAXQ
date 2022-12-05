@@ -5,6 +5,7 @@ import gym
 import numpy as np
 import random
 import pandas as pd
+import matplotlib.pyplot as mpl
 
 env = gym.make('Taxi-v3')
 observation = env.reset()
@@ -23,7 +24,7 @@ counter = 0
 
 collected_data = {'success': [], 'reward': [], 'actions': []}
 
-runs = 5000
+runs = 2000
 for i in range(runs):
     print(f"{i}/{runs}", end='\r')
     done = 0
@@ -75,6 +76,17 @@ for i in range(runs):
 # pandas
 df = pd.DataFrame.from_dict(collected_data)
 print(df)
-
 print(counter/runs*100, "percent successes")
 env.close()
+
+
+#Josh moment for plots and data and stuff
+dfsub1 = df[["actions"]]
+dfsub1 = dfsub1.plot.line(legend=False, title="Q Learn Actions")
+dfsub1.set_xlabel("Epochs")
+dfsub1.set_ylabel("Actions")
+dfsub2 = df[["reward"]]
+dfsub2 = dfsub2.plot.line(legend=False, title="Q Learn Reward")
+dfsub2.set_xlabel("Epochs")
+dfsub2.set_ylabel("Rewards")
+mpl.show()
